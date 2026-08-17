@@ -1,0 +1,40 @@
+---
+import { SITE } from '../config';
+import { withBase } from '../lib/urls';
+
+const socials = [
+  { label: 'GitHub', href: SITE.github },
+  { label: '抖音 · 两只逆足脚', href: SITE.douyin },
+  { label: 'CSDN', href: SITE.csdn },
+];
+---
+
+<footer class="footer">
+  <div class="container-shell footer-grid">
+    <div>
+      <div class="mono footer-name">{SITE.shortName}</div>
+      <p>持续构建，也持续记录。</p>
+    </div>
+    <div class="footer-links" aria-label="社交账号">
+      {socials.map((item) => item.href ? (
+        <a href={item.href} target="_blank" rel="noreferrer">{item.label} ↗</a>
+      ) : (
+        <span title="请在 src/config.ts 中补充链接">{item.label} · 待补充</span>
+      ))}
+      <a href={withBase('/rss.xml')}>RSS</a>
+    </div>
+    <div class="copyright mono">© {new Date().getFullYear()} {SITE.author}</div>
+  </div>
+</footer>
+
+<style>
+  .footer { margin-top: 7rem; padding: 2.5rem 0; border-top: 1px solid var(--line); color: var(--muted); }
+  .footer-grid { display: grid; grid-template-columns: 1.2fr 1fr auto; gap: 2rem; align-items: end; }
+  .footer-name { color: var(--text); font-weight: 700; }
+  .footer p { margin: .3rem 0 0; font-size: .9rem; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: .55rem 1rem; font-size: .85rem; }
+  .footer-links a:hover { color: var(--accent); }
+  .footer-links span { opacity: .62; }
+  .copyright { font-size: .72rem; }
+  @media (max-width: 760px) { .footer { margin-top: 4rem; } .footer-grid { grid-template-columns: 1fr; align-items: start; } }
+</style>

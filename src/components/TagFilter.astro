@@ -1,0 +1,56 @@
+---
+interface Props { tags: string[]; itemLabel: string; }
+const { tags, itemLabel } = Astro.props;
+---
+
+<div class="filter" data-filter-root>
+  <div class="filter-label mono">FILTER /</div>
+  <div class="filter-buttons" role="group" aria-label={`按标签筛选${itemLabel}`}>
+    <button class="active" type="button" data-filter="all" aria-pressed="true">全部</button>
+    {tags.map((tag) => <button type="button" data-filter={tag} aria-pressed="false">{tag}</button>)}
+  </div>
+  <output class="filter-count mono" aria-live="polite"></output>
+</div>
+
+<script>
+  function initFilters() {
+    document.querySelectorAll<HTMLElement>('[data-filter-root]').forEach((root) => {
+      if (root.dataset.ready) return;
+      root.dataset.ready = 'true';
+      const scope = root.parentElement ?? document.body;
+      const buttons = root.querySelectorAll<HTMLButtonElement>('[data-filter]');
+      const items = scope.querySelectorAll<HTMLElement>('[data-filter-item]');
+      const count = root.querySelector<HTMLOutputElement>('.filter-count');
+
+      const apply = (selected: string) => {
+        let visible = 0;
+        items.forEach((item) => {
+          const tags: string[] = JSON.parse(item.dataset.tags ?? '[]');
+          const show = selected === 'all' || tags.includes(selected);
+          item.hidden = !show;
+          if (show) visible += 1;
+        });
+        if (count) count.textContent = `${visible} 项`;
+        buttons.forEach((button) => {
+          const active = button.dataset.filter === selected;
+          button.classList.toggle('active', active);
+          button.setAttribute('aria-pressed', String(active));
+        });
+      };
+
+      buttons.forEach((button) => button.addEventListener('click', () => apply(button.dataset.filter ?? 'all')));
+      apply('all');
+    });
+  }
+  document.addEventListener('astro:page-load', initFilters);
+  initFilters();
+</script>
+
+<style>
+  .filter { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center; margin: 2rem 0 2.5rem; padding: .8rem 0; border-block: 1px solid var(--line); }
+  .filter-label, .filter-count { color: var(--muted); font-size: .68rem; letter-spacing: .08em; }
+  .filter-buttons { display: flex; flex-wrap: wrap; gap: .4rem; }
+  button { border: 0; border-bottom: 1px solid transparent; background: transparent; color: var(--muted); padding: .35rem .5rem; cursor: pointer; font-size: .8rem; }
+  button:hover, button.active { color: var(--accent-strong); border-bottom-color: var(--accent); }
+  @media (max-width: 600px) { .filter { grid-template-columns: 1fr auto; } .filter-label { grid-column: 1; } .filter-count { grid-column: 2; grid-row: 1; } .filter-buttons { grid-column: 1 / -1; overflow-x: auto; flex-wrap: nowrap; padding-bottom: .2rem; } button { white-space: nowrap; } }
+</style>

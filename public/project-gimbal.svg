@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#dce8ea"/>
+  <g fill="none" stroke="#8ba6ab" stroke-width="3">
+    <path d="M65 90h155l45 45h105M735 405H570l-42-42h-95M110 430V315l48-48M690 70v120l-47 47"/>
+    <circle cx="65" cy="90" r="7" fill="#087f8c" stroke="none"/><circle cx="735" cy="405" r="7" fill="#087f8c" stroke="none"/>
+  </g>
+  <g transform="translate(400 255)" fill="none" stroke="#315b62" stroke-width="12">
+    <circle r="112"/><rect x="-68" y="-53" width="136" height="106" rx="5"/><circle r="27" fill="#087f8c" stroke="none"/>
+    <path d="M0 112v85M-55 197h110M-112 0h-68v125M112 0h68v125"/>
+  </g>
+  <text x="42" y="460" fill="#087f8c" font-family="monospace" font-size="22" letter-spacing="4">VISION GIMBAL / PID</text>
+</svg>

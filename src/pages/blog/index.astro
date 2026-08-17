@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import TagFilter from '../../components/TagFilter.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const tags = [...new Set(posts.flatMap((item) => item.data.tags))].sort((a, b) => a.localeCompare(b, 'zh-CN'));
+---
+
+<BaseLayout title="博客" description="STM32 开发、电赛备赛、PCB 设计与嵌入式实践笔记。">
+  <section class="page-head container-shell">
+    <div class="eyebrow">Notes / Tutorials</div>
+    <div class="title-row"><h1>博客</h1><p>写给未来的自己，也写给正在踩同一个坑的人。代码、方法和失败经验都值得留下。</p></div>
+  </section>
+  <section class="container-shell blog-section">
+    <TagFilter tags={tags} itemLabel="文章" />
+    <div>{posts.map((post, index) => <BlogCard post={post} index={index} />)}</div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head { padding: clamp(3.5rem, 8vw, 7rem) 0 1.5rem; }
+  .title-row { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: end; border-bottom: 1px solid var(--line); padding-bottom: 2rem; }
+  h1 { margin: .8rem 0 0; font-size: clamp(3rem, 9vw, 6.5rem); line-height: .95; letter-spacing: -.07em; }
+  p { max-width: 36rem; margin: 0; color: var(--muted); }
+  .blog-section { max-width: 920px; }
+  @media (max-width: 650px) { .title-row { grid-template-columns: 1fr; gap: 1.2rem; } }
+</style>

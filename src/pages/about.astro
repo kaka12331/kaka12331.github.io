@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import { withBase } from '../lib/urls';
+
+const skills = ['STM32', 'MSPM0', '嵌入式 C', 'PID 控制', 'PCB 设计', '传感器与电机', 'Keil', 'Git / GitHub'];
+const timeline = [
+  { year: '2026', title: '电子设计竞赛省一等奖', detail: '持续参与电子设计竞赛与项目实践。' },
+  { year: '2025', title: '全国大学生电子设计竞赛控制类省一等奖', detail: '围绕控制类赛题完成方案设计、联调与落地。' },
+  { year: '现在', title: '创新创业实验室负责人', detail: '带队参与电子设计与工程实践，多次获得省级以上竞赛奖项。' },
+];
+---
+
+<BaseLayout title="关于我" description="向东，河北科技大学电子信息工程专业本科在读，创新创业实验室负责人。">
+  <section class="about-hero container-shell">
+    <div class="about-copy">
+      <div class="eyebrow">About / Xiangdong</div>
+      <h1>保持好奇，<br />把电路跑通。</h1>
+      <p class="lead">我是向东，河北科技大学电子信息工程专业本科二年级学生，也是创新创业实验室负责人。我关注嵌入式系统、控制算法和竞赛硬件，希望把做过的项目整理成真正可复现的开源资料。</p>
+      <SocialLinks />
+    </div>
+    <div class="profile-panel">
+      <img src={withBase('/avatar-placeholder.svg')} alt="向东头像占位图" />
+      <dl>
+        <div><dt class="mono">SCHOOL</dt><dd>河北科技大学</dd></div>
+        <div><dt class="mono">MAJOR</dt><dd>电子信息工程</dd></div>
+        <div><dt class="mono">ROLE</dt><dd>创新创业实验室负责人</dd></div>
+        <div><dt class="mono">FOCUS</dt><dd>嵌入式 · 控制 · 硬件</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="container-shell about-section">
+    <div class="section-label"><span class="mono">01</span><h2>经历与荣誉</h2></div>
+    <ol class="timeline">
+      {timeline.map((item) => (
+        <li><time class="mono">{item.year}</time><div><h3>{item.title}</h3><p>{item.detail}</p></div></li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="container-shell about-section skills-section">
+    <div class="section-label"><span class="mono">02</span><h2>技能方向</h2></div>
+    <div class="skill-grid">{skills.map((skill, index) => <div><span class="mono">{String(index + 1).padStart(2, '0')}</span>{skill}</div>)}</div>
+  </section>
+
+  <section class="container-shell about-section statement">
+    <div class="section-label"><span class="mono">03</span><h2>为什么记录</h2></div>
+    <blockquote>“能跑”只是项目的第一步。把原理、代码和调试过程讲清楚，才有机会让一次实践变成可以复用的经验。</blockquote>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-hero { display: grid; grid-template-columns: 1.25fr .75fr; gap: clamp(2rem, 7vw, 7rem); padding: clamp(3.5rem, 8vw, 7rem) 0; }
+  h1 { margin: 1rem 0 1.5rem; font-size: clamp(3rem, 8vw, 6.2rem); line-height: 1; letter-spacing: -.07em; }
+  .lead { max-width: 44rem; margin: 0 0 2.5rem; color: var(--muted); font-size: 1.04rem; }
+  .profile-panel { align-self: start; border-top: 2px solid var(--accent); background: var(--surface); padding: 1rem; box-shadow: var(--shadow); }
+  .profile-panel img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; background: var(--surface-2); }
+  dl { margin: 1rem 0 0; }
+  dl div { display: grid; grid-template-columns: 5rem 1fr; gap: .5rem; padding: .65rem .2rem; border-top: 1px solid var(--line); }
+  dt { color: var(--accent); font-size: .64rem; letter-spacing: .08em; }
+  dd { margin: 0; font-size: .82rem; }
+  .about-section { display: grid; grid-template-columns: 15rem 1fr; gap: 3rem; padding: 4.5rem 0; border-top: 1px solid var(--line); }
+  .section-label { display: flex; align-items: baseline; gap: .9rem; }
+  .section-label span { color: var(--accent); font-size: .68rem; }
+  .section-label h2 { margin: 0; font-size: 1.1rem; }
+  .timeline { margin: 0; padding: 0; list-style: none; }
+  .timeline li { position: relative; display: grid; grid-template-columns: 5rem 1fr; gap: 1.4rem; padding: 0 0 2.4rem 1rem; border-left: 1px solid var(--line); }
+  .timeline li::before { content: ""; position: absolute; width: .5rem; height: .5rem; left: -.29rem; top: .4rem; background: var(--accent); }
+  .timeline time { color: var(--accent); font-size: .74rem; }
+  .timeline h3 { margin: 0; font-size: 1.1rem; }
+  .timeline p { margin: .4rem 0 0; color: var(--muted); font-size: .9rem; }
+  .skill-grid { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--line); }
+  .skill-grid div { display: flex; gap: 1rem; align-items: center; min-height: 4.2rem; border-bottom: 1px solid var(--line); }
+  .skill-grid div:nth-child(odd) { border-right: 1px solid var(--line); padding-right: 1rem; }
+  .skill-grid div:nth-child(even) { padding-left: 1rem; }
+  .skill-grid span { color: var(--accent); font-size: .65rem; }
+  blockquote { max-width: 45rem; margin: 0; color: var(--muted); font-size: clamp(1.25rem, 3vw, 1.8rem); line-height: 1.65; letter-spacing: -.02em; }
+  @media (max-width: 760px) { .about-hero { grid-template-columns: 1fr; } .profile-panel { max-width: 27rem; } .about-section { grid-template-columns: 1fr; gap: 2rem; } }
+  @media (max-width: 480px) { .skill-grid { grid-template-columns: 1fr; } .skill-grid div:nth-child(odd) { border-right: 0; } .skill-grid div:nth-child(even) { padding-left: 0; } }
+</style>

@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import TagFilter from '../../components/TagFilter.astro';
+
+const projects = await getCollection('projects');
+const tags = [...new Set(projects.flatMap((item) => item.data.tags))].sort((a, b) => a.localeCompare(b, 'zh-CN'));
+---
+
+<BaseLayout title="项目" description="向东的嵌入式、电子设计竞赛与硬件开源项目。">
+  <section class="page-head container-shell">
+    <div class="eyebrow">Projects / Open Source</div>
+    <div class="title-row"><h1>项目</h1><p>从控制算法、嵌入式固件到硬件扩展板，记录每一个从原型走向可复现的过程。</p></div>
+  </section>
+  <section class="container-shell project-section">
+    <TagFilter tags={tags} itemLabel="项目" />
+    <div class="project-list">{projects.map((project, index) => <ProjectCard project={project} index={index} />)}</div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head { padding: clamp(3.5rem, 8vw, 7rem) 0 1.5rem; }
+  .title-row { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: end; border-bottom: 1px solid var(--line); padding-bottom: 2rem; }
+  h1 { margin: .8rem 0 0; font-size: clamp(3rem, 9vw, 6.5rem); line-height: .95; letter-spacing: -.07em; }
+  p { max-width: 36rem; margin: 0; color: var(--muted); }
+  .project-section { position: relative; }
+  .project-list { display: grid; gap: 1.4rem; }
+  @media (max-width: 650px) { .title-row { grid-template-columns: 1fr; gap: 1.2rem; } }
+</style>

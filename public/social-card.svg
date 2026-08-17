@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#182126"/>
+  <g fill="none" stroke="#334449" stroke-width="2"><path d="M0 130h220l65 65h170M1200 480H925l-70-70H670M1020 0v145l-55 55M165 630V475l55-55"/><circle cx="455" cy="195" r="7" fill="#53c7d1"/><circle cx="670" cy="410" r="7" fill="#53c7d1"/></g>
+  <rect x="88" y="88" width="66" height="66" fill="#087f8c"/>
+  <text x="121" y="132" fill="#fff" font-family="monospace" font-size="25" text-anchor="middle" font-weight="700">XD</text>
+  <text x="88" y="305" fill="#f3f7f8" font-family="Arial, sans-serif" font-size="76" font-weight="700">向东的技术站</text>
+  <text x="88" y="382" fill="#aab9bd" font-family="Arial, sans-serif" font-size="32">嵌入式 · 竞赛硬件 · 开源项目</text>
+  <text x="88" y="535" fill="#53c7d1" font-family="monospace" font-size="21" letter-spacing="5">BUILD / DEBUG / SHARE</text>
+</svg>

@@ -1,0 +1,32 @@
+---
+import { SITE } from '../config';
+
+const items = [
+  { label: 'GitHub', meta: '@kaka12331', href: SITE.github },
+  { label: '抖音', meta: '两只逆足脚 · kak_a', href: SITE.douyin },
+  { label: 'CSDN', meta: '技术博客', href: SITE.csdn },
+];
+---
+
+<div class="socials">
+  {items.map((item) => item.href ? (
+    <a class="social-link" href={item.href} target="_blank" rel="noreferrer">
+      <span>{item.label}</span><small class="mono">{item.meta}</small><b aria-hidden="true">↗</b>
+    </a>
+  ) : (
+    <span class="social-link pending" title="请在 src/config.ts 中补充主页链接">
+      <span>{item.label}</span><small class="mono">{item.meta} · 链接待补充</small>
+    </span>
+  ))}
+</div>
+
+<style>
+  .socials { display: flex; flex-wrap: wrap; gap: .6rem; }
+  .social-link { min-width: 9.8rem; display: grid; grid-template-columns: 1fr auto; gap: .05rem .8rem; border-top: 1px solid var(--line); padding: .65rem .2rem; transition: border-color .2s ease, color .2s ease; }
+  .social-link span { font-size: .86rem; font-weight: 650; }
+  .social-link small { grid-column: 1; color: var(--muted); font-size: .66rem; }
+  .social-link b { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--accent); font-weight: 400; }
+  a.social-link:hover { border-color: var(--accent); color: var(--accent-strong); }
+  .pending { opacity: .62; cursor: help; }
+  @media (max-width: 520px) { .socials { display: grid; } .social-link { width: 100%; } }
+</style>

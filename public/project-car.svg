@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#dfe9e7"/>
+  <path d="M0 350c150-95 230 90 380-10s250-75 420-10" fill="none" stroke="#b0c3c0" stroke-width="18"/>
+  <g transform="translate(400 245)" stroke="#315b62" stroke-width="10" fill="#dfe9e7">
+    <rect x="-145" y="-75" width="290" height="150"/>
+    <circle cx="-115" cy="92" r="45" fill="#315b62"/><circle cx="115" cy="92" r="45" fill="#315b62"/>
+    <rect x="-82" y="-42" width="164" height="72" fill="#087f8c"/>
+    <path d="M-130-75v-65M130-75v-65M-165-140h330"/>
+    <circle cx="-150" cy="-140" r="10" fill="#087f8c"/><circle cx="-100" cy="-140" r="10" fill="#087f8c"/><circle cx="-50" cy="-140" r="10" fill="#087f8c"/><circle cy="-140" r="10" fill="#087f8c"/><circle cx="50" cy="-140" r="10" fill="#087f8c"/><circle cx="100" cy="-140" r="10" fill="#087f8c"/><circle cx="150" cy="-140" r="10" fill="#087f8c"/>
+  </g>
+  <text x="42" y="460" fill="#087f8c" font-family="monospace" font-size="22" letter-spacing="4">LINE FOLLOWER / MSPM0</text>
+</svg>

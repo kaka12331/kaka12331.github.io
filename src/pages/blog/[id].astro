@@ -1,0 +1,62 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate, withBase } from '../../lib/urls';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+interface Props { post: CollectionEntry<'blog'>; }
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description} image={post.data.cover} type="article">
+  <article class="article-page container-shell">
+    <nav class="breadcrumb mono" aria-label="面包屑"><a href={withBase('/')}>首页</a><span>/</span><a href={withBase('/blog/')}>博客</a><span>/</span><span>正文</span></nav>
+    <header class="article-head">
+      <div class="eyebrow">Technical Note</div>
+      <h1>{post.data.title}</h1>
+      <p>{post.data.description}</p>
+      <div class="meta mono">
+        <time datetime={post.data.pubDate.toISOString()}>发布于 {formatDate(post.data.pubDate)}</time>
+        {post.data.updatedDate && <time datetime={post.data.updatedDate.toISOString()}>更新于 {formatDate(post.data.updatedDate)}</time>}
+      </div>
+      <div class="tags">{post.data.tags.map((tag) => <span class="tag">{tag}</span>)}</div>
+    </header>
+    <div class="article-grid">
+      <div class="article"><Content /></div>
+      {headings.length > 0 && (
+        <aside class="toc">
+          <div class="mono toc-title">ON THIS PAGE</div>
+          <ol>{headings.filter((item) => item.depth <= 3).map((item) => <li class:list={[`depth-${item.depth}`]}><a href={`#${item.slug}`}>{item.text}</a></li>)}</ol>
+        </aside>
+      )}
+    </div>
+    <footer class="article-foot"><a href={withBase('/blog/')}>← 返回博客列表</a></footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .article-page { max-width: 1040px; padding-top: 2rem; }
+  .breadcrumb { display: flex; flex-wrap: wrap; gap: .5rem; color: var(--muted); font-size: .68rem; }
+  .breadcrumb a:hover { color: var(--accent); }
+  .article-head { max-width: 800px; padding: 4rem 0 3rem; }
+  h1 { margin: 1rem 0; font-size: clamp(2.3rem, 6vw, 4.7rem); line-height: 1.08; letter-spacing: -.055em; }
+  .article-head > p { max-width: 43rem; color: var(--muted); font-size: 1.05rem; }
+  .meta { display: flex; flex-wrap: wrap; gap: .6rem 1.5rem; margin: 1.4rem 0; color: var(--muted); font-size: .7rem; }
+  .tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .article-grid { display: grid; grid-template-columns: minmax(0, 1fr) 13rem; gap: 4rem; align-items: start; }
+  .article { max-width: 760px; min-width: 0; }
+  .toc { position: sticky; top: 6.5rem; border-left: 1px solid var(--line); padding-left: 1rem; }
+  .toc-title { color: var(--accent); font-size: .62rem; letter-spacing: .08em; }
+  .toc ol { margin: .8rem 0 0; padding: 0; list-style: none; }
+  .toc li { margin: .45rem 0; color: var(--muted); font-size: .76rem; line-height: 1.4; }
+  .toc .depth-3 { padding-left: .7rem; }
+  .toc a:hover { color: var(--accent); }
+  .article-foot { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--line); font-size: .85rem; }
+  .article-foot a:hover { color: var(--accent); }
+  @media (max-width: 800px) { .article-grid { grid-template-columns: 1fr; } .toc { display: none; } }
+</style>

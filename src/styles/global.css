@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+  --page: #f7f9fa;
+  --surface: #ffffff;
+  --surface-2: #edf2f4;
+  --text: #182126;
+  --muted: #607078;
+  --line: #d9e1e4;
+  --accent: #087f8c;
+  --accent-strong: #05636d;
+  --accent-soft: #d9f0f2;
+  --code-bg: #eff4f5;
+  --shadow: 0 16px 40px rgb(16 42 48 / 7%);
+}
+
+.dark {
+  color-scheme: dark;
+  --page: #171b1d;
+  --surface: #1e2427;
+  --surface-2: #252d30;
+  --text: #edf4f5;
+  --muted: #9eafb5;
+  --line: #344044;
+  --accent: #53c7d1;
+  --accent-strong: #84dce2;
+  --accent-soft: #17383d;
+  --code-bg: #121719;
+  --shadow: 0 20px 50px rgb(0 0 0 / 22%);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--page);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+  line-height: 1.7;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--accent); color: #fff; }
+a { color: inherit; text-decoration: none; }
+button, a { -webkit-tap-highlight-color: transparent; }
+img { max-width: 100%; }
+
+.mono {
+  font-family: "JetBrains Mono", "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+}
+
+.container-shell {
+  width: min(1120px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  color: var(--accent);
+  font: 600 .78rem/1.2 "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 1.5rem;
+  height: 1px;
+  background: currentColor;
+}
+
+.section-title {
+  margin: .75rem 0 0;
+  font-size: clamp(1.7rem, 4vw, 2.5rem);
+  line-height: 1.2;
+  letter-spacing: -.03em;
+}
+
+.section-lead { max-width: 42rem; color: var(--muted); }
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.7rem;
+  padding: .2rem .55rem;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: transparent;
+  font: 500 .72rem/1.2 "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+}
+
+.focus-ring:focus-visible,
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.article {
+  color: var(--text);
+  font-size: 1.02rem;
+}
+.article > *:first-child { margin-top: 0; }
+.article h2, .article h3 {
+  scroll-margin-top: 6rem;
+  line-height: 1.35;
+  letter-spacing: -.02em;
+}
+.article h2 { margin: 2.8rem 0 1rem; font-size: 1.55rem; }
+.article h3 { margin: 2rem 0 .8rem; font-size: 1.2rem; }
+.article p, .article ul, .article ol, .article blockquote { margin: 1rem 0; }
+.article ul, .article ol { padding-left: 1.4rem; }
+.article li + li { margin-top: .35rem; }
+.article a { color: var(--accent-strong); text-decoration: underline; text-underline-offset: 3px; }
+.article blockquote {
+  border-left: 3px solid var(--accent);
+  margin-left: 0;
+  padding: .25rem 0 .25rem 1rem;
+  color: var(--muted);
+}
+.article :not(pre) > code {
+  border: 1px solid var(--line);
+  background: var(--code-bg);
+  padding: .12rem .35rem;
+  font: .88em "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+}
+.article pre {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  box-shadow: var(--shadow);
+}
+.article pre code { font: .84rem/1.75 "JetBrains Mono", "Cascadia Code", Consolas, monospace; }
+.article table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .92rem; }
+.article th, .article td { border-bottom: 1px solid var(--line); padding: .65rem; text-align: left; }
+.article img { border: 1px solid var(--line); }
+
+[data-filter-item][hidden] { display: none !important; }
+
+@media (max-width: 640px) {
+  .container-shell { width: min(100% - 1.25rem, 1120px); }
+  .article { font-size: .98rem; }
+  .article pre { margin-inline: -.25rem; padding: .85rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

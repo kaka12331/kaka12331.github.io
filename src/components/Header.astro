@@ -1,0 +1,94 @@
+---
+import { SITE } from '../config';
+import { withBase } from '../lib/urls';
+
+const nav = [
+  { href: '/', label: '首页' },
+  { href: '/projects/', label: '项目' },
+  { href: '/blog/', label: '博客' },
+  { href: '/about/', label: '关于我' },
+];
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const pathname = Astro.url.pathname.replace(base, '') || '/';
+const isActive = (href: string) => href === '/' ? pathname === '/' : pathname.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="container-shell header-inner">
+    <a class="brand mono" href={withBase('/')} aria-label={`${SITE.title}首页`}>
+      <span class="brand-mark" aria-hidden="true">XD</span>
+      <span>{SITE.shortName}</span>
+    </a>
+
+    <button class="menu-toggle" type="button" aria-label="打开导航菜单" aria-expanded="false" data-menu-toggle>
+      <span></span><span></span>
+    </button>
+
+    <nav class="nav" aria-label="主导航" data-nav>
+      {nav.map((item) => (
+        <a class:list={['nav-link', { active: isActive(item.href) }]} href={withBase(item.href)}>
+          {item.label}
+        </a>
+      ))}
+      <button class="theme-toggle mono" type="button" data-theme-toggle aria-label="切换深色模式" aria-pressed="false">
+        <span class="theme-icon" aria-hidden="true"></span>
+        <span class="theme-label">主题</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    const root = document.documentElement;
+    const menuButton = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+    const nav = document.querySelector<HTMLElement>('[data-nav]');
+
+    menuButton?.addEventListener('click', () => {
+      const open = menuButton.getAttribute('aria-expanded') === 'true';
+      menuButton.setAttribute('aria-expanded', String(!open));
+      menuButton.setAttribute('aria-label', open ? '打开导航菜单' : '关闭导航菜单');
+      nav?.classList.toggle('open', !open);
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
+      button.setAttribute('aria-pressed', String(root.classList.contains('dark')));
+      button.addEventListener('click', () => {
+        const nextDark = !root.classList.contains('dark');
+        root.classList.toggle('dark', nextDark);
+        localStorage.setItem('theme', nextDark ? 'dark' : 'light');
+        button.setAttribute('aria-pressed', String(nextDark));
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initHeader);
+  initHeader();
+</script>
+
+<style>
+  .site-header { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid color-mix(in srgb, var(--line) 78%, transparent); background: color-mix(in srgb, var(--page) 90%, transparent); backdrop-filter: blur(14px); }
+  .header-inner { min-height: 4.5rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  .brand { display: inline-flex; align-items: center; gap: .7rem; font-weight: 700; letter-spacing: -.03em; }
+  .brand-mark { display: grid; width: 2rem; height: 2rem; place-items: center; background: var(--accent); color: #fff; font-size: .72rem; letter-spacing: -.06em; }
+  .nav { display: flex; align-items: center; gap: .2rem; }
+  .nav-link { position: relative; padding: .55rem .75rem; color: var(--muted); font-size: .92rem; }
+  .nav-link::after { content: ""; position: absolute; left: .75rem; right: .75rem; bottom: .25rem; height: 1px; background: var(--accent); transform: scaleX(0); transition: transform .2s ease; }
+  .nav-link:hover, .nav-link.active { color: var(--text); }
+  .nav-link.active::after { transform: scaleX(1); }
+  .theme-toggle { display: inline-flex; align-items: center; gap: .45rem; margin-left: .5rem; border: 1px solid var(--line); background: transparent; color: var(--muted); padding: .45rem .6rem; cursor: pointer; font-size: .76rem; }
+  .theme-icon { width: .85rem; height: .85rem; border: 1.5px solid currentColor; border-radius: 50%; box-shadow: inset -.27rem -.15rem 0 0 var(--page); }
+  :global(.dark) .theme-icon { box-shadow: none; background: currentColor; }
+  .menu-toggle { display: none; width: 2.5rem; height: 2.5rem; border: 1px solid var(--line); background: transparent; padding: .65rem; cursor: pointer; }
+  .menu-toggle span { display: block; height: 1px; background: var(--text); margin: .35rem 0; }
+
+  @media (max-width: 700px) {
+    .menu-toggle { display: block; }
+    .nav { position: absolute; display: none; top: calc(100% + 1px); left: 0; right: 0; padding: .7rem; background: var(--page); border-bottom: 1px solid var(--line); box-shadow: var(--shadow); }
+    .nav.open { display: grid; }
+    .nav-link { padding: .8rem 1rem; }
+    .nav-link::after { left: 1rem; right: auto; width: 1.25rem; bottom: .55rem; }
+    .theme-toggle { margin: .25rem 1rem .65rem; justify-self: start; }
+  }
+</style>

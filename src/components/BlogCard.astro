@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDate, withBase } from '../lib/urls';
+
+interface Props { post: CollectionEntry<'blog'>; index?: number; }
+const { post, index = 0 } = Astro.props;
+---
+
+<article class="post-card" data-filter-item data-tags={JSON.stringify(post.data.tags)}>
+  <div class="post-number mono">{String(index + 1).padStart(2, '0')}</div>
+  <div class="post-main">
+    <div class="post-meta mono"><time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time><span>/</span><span>{post.data.tags[0] ?? '笔记'}</span></div>
+    <h3><a href={withBase(`/blog/${post.id}/`)}>{post.data.title}</a></h3>
+    <p>{post.data.description}</p>
+    <div class="tags">{post.data.tags.map((tag) => <span class="tag">{tag}</span>)}</div>
+  </div>
+  <a class="post-arrow mono" href={withBase(`/blog/${post.id}/`)} aria-label={`阅读${post.data.title}`}>→</a>
+</article>
+
+<style>
+  .post-card { display: grid; grid-template-columns: 3rem 1fr auto; gap: 1rem; align-items: start; padding: 1.5rem 0; border-top: 1px solid var(--line); }
+  .post-card:last-child { border-bottom: 1px solid var(--line); }
+  .post-number { color: var(--accent); font-size: .72rem; padding-top: .35rem; }
+  .post-meta { display: flex; gap: .5rem; color: var(--muted); font-size: .68rem; letter-spacing: .04em; }
+  h3 { margin: .4rem 0 .4rem; font-size: 1.2rem; line-height: 1.35; letter-spacing: -.02em; }
+  h3 a:hover { color: var(--accent-strong); }
+  p { max-width: 45rem; margin: 0 0 .8rem; color: var(--muted); font-size: .9rem; }
+  .tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+  .post-arrow { display: grid; width: 2.3rem; height: 2.3rem; place-items: center; border: 1px solid var(--line); color: var(--accent); transition: background .2s ease, color .2s ease; }
+  .post-arrow:hover { background: var(--accent); color: #fff; }
+  @media (max-width: 560px) { .post-card { grid-template-columns: 2rem 1fr; gap: .65rem; } .post-arrow { display: none; } }
+</style>

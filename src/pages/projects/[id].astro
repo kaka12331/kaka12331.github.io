@@ -1,0 +1,70 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/urls';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+
+interface Props { project: CollectionEntry<'projects'>; }
+const { project } = Astro.props;
+const { Content, headings } = await render(project);
+const cover = project.data.cover ? withBase(project.data.cover) : undefined;
+---
+
+<BaseLayout title={project.data.title} description={project.data.description} image={project.data.cover} type="article">
+  <article class="project-page container-shell">
+    <nav class="breadcrumb mono" aria-label="面包屑"><a href={withBase('/')}>首页</a><span>/</span><a href={withBase('/projects/')}>项目</a><span>/</span><span>详情</span></nav>
+    <header class="project-head">
+      <div class="project-copy">
+        <div class="eyebrow">Open Source Project</div>
+        <h1>{project.data.title}</h1>
+        <p>{project.data.description}</p>
+        <div class="tags">{project.data.tags.map((tag) => <span class="tag">{tag}</span>)}</div>
+        <div class="actions">
+          <a class="primary" href={project.data.githubUrl} target="_blank" rel="noreferrer">查看 GitHub 仓库 ↗</a>
+          {project.data.demoUrl && <a href={project.data.demoUrl} target="_blank" rel="noreferrer">查看演示 ↗</a>}
+        </div>
+      </div>
+      <div class="project-media">
+        {cover ? <img src={cover} alt={`${project.data.title}示意图`} /> : <div class="fallback mono">XD / PROJECT</div>}
+        <span class="status mono">STATUS / {project.data.status}</span>
+      </div>
+    </header>
+    <div class="content-wrap">
+      {headings.length > 0 && <aside class="toc"><div class="mono">CONTENTS</div>{headings.filter((h) => h.depth <= 3).map((h) => <a class:list={[`depth-${h.depth}`]} href={`#${h.slug}`}>{h.text}</a>)}</aside>}
+      <div class="article"><Content /></div>
+    </div>
+    <footer class="project-foot"><a href={withBase('/projects/')}>← 返回项目列表</a></footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .project-page { padding-top: 2rem; }
+  .breadcrumb { display: flex; flex-wrap: wrap; gap: .5rem; color: var(--muted); font-size: .68rem; }
+  .breadcrumb a:hover { color: var(--accent); }
+  .project-head { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(2rem, 6vw, 5rem); align-items: center; padding: 4rem 0 5rem; }
+  h1 { margin: 1rem 0; font-size: clamp(2.5rem, 6.5vw, 5.2rem); line-height: 1.04; letter-spacing: -.06em; }
+  .project-copy > p { max-width: 40rem; color: var(--muted); font-size: 1.04rem; }
+  .tags { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1.3rem 0; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.2rem; margin-top: 1.8rem; font-size: .86rem; font-weight: 650; }
+  .actions .primary { background: var(--accent); color: #fff; padding: .75rem 1rem; }
+  .actions a:hover { color: var(--accent); }
+  .actions .primary:hover { color: #fff; background: var(--accent-strong); }
+  .project-media { position: relative; min-height: 18rem; background: var(--surface-2); border: 1px solid var(--line); }
+  .project-media img { display: block; width: 100%; height: 100%; min-height: 18rem; object-fit: cover; }
+  .fallback { display: grid; min-height: 18rem; place-items: center; color: var(--muted); }
+  .status { position: absolute; left: 1rem; bottom: 1rem; background: var(--surface); padding: .35rem .55rem; color: var(--accent); font-size: .64rem; }
+  .content-wrap { display: grid; grid-template-columns: 12rem minmax(0, 760px); gap: 4rem; justify-content: center; padding-top: 4rem; border-top: 1px solid var(--line); }
+  .toc { position: sticky; top: 6.5rem; align-self: start; display: grid; gap: .55rem; border-left: 1px solid var(--line); padding-left: 1rem; }
+  .toc div { margin-bottom: .2rem; color: var(--accent); font-size: .62rem; letter-spacing: .08em; }
+  .toc a { color: var(--muted); font-size: .75rem; line-height: 1.4; }
+  .toc .depth-3 { padding-left: .7rem; }
+  .toc a:hover { color: var(--accent); }
+  .article { min-width: 0; }
+  .project-foot { margin: 4rem auto 0; max-width: 976px; padding-top: 1.5rem; border-top: 1px solid var(--line); font-size: .85rem; }
+  .project-foot a:hover { color: var(--accent); }
+  @media (max-width: 800px) { .project-head { grid-template-columns: 1fr; } .content-wrap { grid-template-columns: 1fr; } .toc { display: none; } }
+</style>

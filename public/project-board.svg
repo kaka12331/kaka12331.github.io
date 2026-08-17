@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#dce8e5"/>
+  <g transform="translate(160 70)">
+    <rect width="480" height="340" rx="8" fill="#438b86" stroke="#315b62" stroke-width="8"/>
+    <g fill="none" stroke="#bfe1dd" stroke-width="5">
+      <path d="M55 65h115v70h75M425 70H310v65h-65M55 275h105v-65h85M425 270H320v-60h-75"/>
+      <circle cx="55" cy="65" r="9" fill="#dce8e5"/><circle cx="425" cy="70" r="9" fill="#dce8e5"/><circle cx="55" cy="275" r="9" fill="#dce8e5"/><circle cx="425" cy="270" r="9" fill="#dce8e5"/>
+    </g>
+    <rect x="175" y="105" width="130" height="130" fill="#dce8e5" stroke="#315b62" stroke-width="7"/>
+    <g fill="#315b62"><circle cx="30" cy="30" r="10"/><circle cx="450" cy="30" r="10"/><circle cx="30" cy="310" r="10"/><circle cx="450" cy="310" r="10"/></g>
+  </g>
+  <text x="42" y="460" fill="#087f8c" font-family="monospace" font-size="22" letter-spacing="4">EXPANSION BOARD / EDA</text>
+</svg>
